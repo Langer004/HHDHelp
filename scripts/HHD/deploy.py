@@ -1,5 +1,6 @@
 from brownie import HypeDiscoNFT, accounts, network, config
 from scripts.helpfulscripts import fund_hypedisconft 
+
 def main():
     dev = accounts.add(config['wallets']['from_key'])
     print(network.show_active())

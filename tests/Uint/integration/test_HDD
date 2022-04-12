@@ -1,0 +1,35 @@
+import pytest
+from brownie import network, HypeDiscoNFT
+from scripts.helpfulscripts import (
+    get_account,
+    get_contract,
+    LOCAL_BLOCKCHAIN_ENVIRONMENTS,
+    listen_for_event,
+)
+import time
+
+
+def test_can_create_advanced_collectible_integration(
+    get_keyhash,
+    chainlink_fee,
+):
+    # Arrange
+    if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for integration testing")
+    hypedisco_nft = HypeDiscoNFT.deploy(
+        get_contract("vrf_coordinator").address,
+        get_contract("link_token").address,
+        get_keyhash,
+        {"from": get_account()},
+    )
+    get_contract("link_token").transfer(
+        hypedisco_nft.address, chainlink_fee * 3, {"from": get_account()}
+    )
+    # Act
+    hypedisco_nft.createHyena("None", {"from": get_account()})
+    # time.sleep(75)
+    listen_for_event(
+        hypedisco_nft, "ReturnedHyena", timeout=200, poll_interval=10
+    )
+    # Assert
+    assert hypedisco_nft.tokenCounter() > 0

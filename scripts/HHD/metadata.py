@@ -52,7 +52,7 @@ def write_metadata(number_of_tokens, nft_contract):
             if os.getenv("UPLOAD_IPFS") == "true":
                 upload_to_ipfs(metadata_file_name)
 
-# 0x11E06e6bD513Bf14BdcDF69D5A3bbD10807A12b9
+#  0xa2039831D0ffacBa2739bEd17e9B000a2765CC6F 
 # http://127.0.0.1:5001
 # curl -X POST -F file=@img/vip.png http://localhost:5001/api/v0/add
 
